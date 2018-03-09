@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,10 +40,10 @@ public class WorkoutTransaction implements Serializable {
 	private Duration duration;
 	private double calsBurnt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "workoutid")
 	private Workout workout;
-
+	
 	public WorkoutTransaction(long id, LocalDateTime startTime, LocalDateTime stopTime, Duration duration,
 			double calsBurnt, Workout workout) {
 		this.id = id;

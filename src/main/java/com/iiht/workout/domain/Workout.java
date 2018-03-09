@@ -1,7 +1,6 @@
 package com.iiht.workout.domain;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -31,13 +29,9 @@ public class Workout implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private UnitTime unitTime;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "userid")
 	private User user;
-	
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "workout", cascade = CascadeType.ALL)
-	private List<WorkoutTransaction> workoutTransactions;
 
 	public Workout() {
 	}

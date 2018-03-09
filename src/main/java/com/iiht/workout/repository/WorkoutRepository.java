@@ -14,5 +14,8 @@ public interface WorkoutRepository extends CrudRepository<Workout, Long> {
 	
 	@Query(value = "select * FROM Workout WHERE userid= ?1",  nativeQuery = true)
 	List<Workout> findByUserId(@Param("userid") Long userid);
+	
+	@Query(value = "select * FROM Workout WHERE userid= (select userid from USER where user_name= ?1)",  nativeQuery = true)
+	List<Workout> findByUserName(String userName);
 
 }

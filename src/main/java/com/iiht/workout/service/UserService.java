@@ -17,4 +17,17 @@ public class UserService {
 		return _user;
 	}
 
+	public Long authenticateUser(User user) {
+		Long userId = userRepository.findByName(user.getUserName());
+		if (userId != null)
+			return userId;
+		return null;
+	}
+
+	public Long getUserId(String userName) {
+
+		return userRepository.findByName(userName);
+
+	}
+
 }

@@ -24,4 +24,9 @@ public class WorkoutService {
 		return workouts;
 	}
 
+	public List<Workout> findByUserName(String userName) {
+		List<Workout> workouts = workoutRepository.findByUserName(userName);
+		return workouts;
+	}
+
 }

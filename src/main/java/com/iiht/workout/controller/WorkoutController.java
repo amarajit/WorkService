@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.iiht.workout.domain.Workout;
+import com.iiht.workout.service.UserService;
 import com.iiht.workout.service.WorkoutService;
 
 @RestController
@@ -24,13 +25,18 @@ public class WorkoutController {
 	@Autowired
 	WorkoutService workoutService;
 
-	@GetMapping("/{userid}")
-	public List<Workout> workout(@PathVariable("userid") Long userid) {
-		return workoutService.findByUser(userid);
+	@Autowired
+	UserService userService;
+
+	@GetMapping("/user/{userName}")
+	public List<Workout> workout(@PathVariable("userName") String userName) {
+		return workoutService.findByUserName(userName);
 	}
 
 	@PostMapping("/add")
 	public ResponseEntity<?> create(@RequestBody Workout workout) {
+		Long userId = userService.getUserId(workout.getUser().getUserName());
+		workout.getUser().setId(userId);
 		Workout _workout = workoutService.create(workout);
 
 		assert _workout != null;
