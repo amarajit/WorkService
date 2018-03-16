@@ -39,6 +39,7 @@ public class UserController {
 		if (null != userId && 0 != userId) {
 			message.put("message", "User already registered.");
 			message.put("Status", "Error");
+			message.put("userId", userId);
 			response = new ResponseEntity<String>(new Gson().toJson(message), HttpStatus.FORBIDDEN);
 		} else {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -67,6 +68,7 @@ public class UserController {
 		if (userId != null) {
 			message.put("message", "User Authenticated Successfully.");
 			message.put("Status", "Sucess");
+			message.put("userId", userId);
 			response = new ResponseEntity<String>(new Gson().toJson(message), HttpStatus.OK);
 		} else {
 			message.put("message", "Invalid User.");

@@ -28,15 +28,13 @@ public class WorkoutController {
 	@Autowired
 	UserService userService;
 
-	@GetMapping("/user/{userName}")
-	public List<Workout> workout(@PathVariable("userName") String userName) {
-		return workoutService.findByUserName(userName);
+	@GetMapping("/user/{userId}")
+	public List<Workout> workout(@PathVariable("userId") Long userId) {
+		return workoutService.findByUser(userId);
 	}
 
 	@PostMapping("/add")
 	public ResponseEntity<?> create(@RequestBody Workout workout) {
-		Long userId = userService.getUserId(workout.getUser().getUserName());
-		workout.getUser().setId(userId);
 		Workout _workout = workoutService.create(workout);
 
 		assert _workout != null;

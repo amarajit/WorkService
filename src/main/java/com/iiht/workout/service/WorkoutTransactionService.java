@@ -1,5 +1,7 @@
 package com.iiht.workout.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +16,8 @@ public class WorkoutTransactionService {
 	@Autowired
 	WorkoutTxRepository workoutTxRepository;
 
-	public WorkoutTransaction getWorkOutTxs(@PathVariable("workoutid") Long workoutid) {
-		return workoutTxRepository.findOne(workoutid);
+	public List<WorkoutTransaction> getWorkOutTxs(@PathVariable("workoutid") Long workoutid) {
+		return workoutTxRepository.findByWorkoutId(workoutid);
 	}
 
 	public WorkoutTransaction create(@RequestBody WorkoutTransaction workoutTx) {
