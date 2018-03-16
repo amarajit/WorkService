@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,16 +28,32 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+
 	@PostMapping("/add")
 	public ResponseEntity<?> create(@RequestBody User user) {
-		User _user = userService.create(user);
-		assert _user != null;
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-		httpHeaders.setLocation(
-				ServletUriComponentsBuilder.fromCurrentRequest().path("/" + _user.getId()).buildAndExpand().toUri());
+		Map<String, Object> message = new HashMap<String, Object>();
+		Long userId = userService.getUserId(user.getUserName());
+		ResponseEntity<String> response = null;
+		if (null != userId && 0 != userId) {
+			message.put("message", "User already registered.");
+			message.put("Status", "Error");
+			response = new ResponseEntity<String>(new Gson().toJson(message), HttpStatus.FORBIDDEN);
+		} else {
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+			User _user = userService.create(user);
+			assert _user != null;
+			HttpHeaders httpHeaders = new HttpHeaders();
+			httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+			httpHeaders.setLocation(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + _user.getId())
+					.buildAndExpand().toUri());
+			message.put("message", "User registered !");
+			message.put("Status", "Success");
+			response = new ResponseEntity<String>(new Gson().toJson(message), HttpStatus.OK);
+		}
 
-		return new ResponseEntity<>(_user, httpHeaders, HttpStatus.CREATED);
+		return response;
 	}
 
 	@GetMapping(value = "/login")
