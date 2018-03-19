@@ -20,10 +20,19 @@ import com.iiht.workout.domain.Workout;
 public class WorkoutRepositoryTest {
 
 	@Autowired
+	private WorkoutRepository workoutRepository;
+	
+	@Autowired
 	private CacheManager cacheManager;
 
-	@Autowired
-	private WorkoutRepository workoutRepository;
+	@Test
+	public void testFindByUserId() {
+		Cache workouts = this.cacheManager.getCache("userWorkoutsCache");
+		assertThat(workouts).isNotNull();
+		workouts.clear();
+		List<Workout> response = this.workoutRepository.findByUserId(8L);
+		assertNotNull(response);
+	}
 
 	
 

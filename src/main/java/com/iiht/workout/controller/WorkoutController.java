@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.iiht.workout.domain.Workout;
-import com.iiht.workout.service.UserService;
 import com.iiht.workout.service.WorkoutService;
 
 @RestController
@@ -24,9 +23,6 @@ public class WorkoutController {
 
 	@Autowired
 	WorkoutService workoutService;
-
-	@Autowired
-	UserService userService;
 
 	@GetMapping("/user/{userId}")
 	public List<Workout> workout(@PathVariable("userId") Long userId) {
